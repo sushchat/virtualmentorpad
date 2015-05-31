@@ -3,6 +3,7 @@ angular.module('vmp', [
 	'vmp.router',
 	'vmp.landing',
 	'vmp.render',
+	'vmp.ui',
 
 	'snap'
 ])

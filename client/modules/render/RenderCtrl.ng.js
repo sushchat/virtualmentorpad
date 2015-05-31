@@ -2,18 +2,14 @@
 
 angular.module('vmp.render', [
 		'vmp.core',
+		'vmp.ui',
 		'angular-meteor',
 		'babylon'
 	])
-	.controller('RenderCtrl', function ($scope, BABYLON, $rootScene, CubeMapper) {
+	.controller('RenderCtrl', function ($scope, BABYLON, $rootScene, CubeMapper, DatGUIHelper) {
 
 		$rootScene.init().then(function () {
-			CubeMapper.setCubeMap('unity/1');
-		})
-
-		// Watch for browser/canvas resize events
-		window.addEventListener('resize', function () {
-			engine.resize();
+			DatGUIHelper.init();
 		});
 
 	});

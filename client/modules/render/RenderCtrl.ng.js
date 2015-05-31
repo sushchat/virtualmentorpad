@@ -8,7 +8,7 @@ angular.module('vmp.render', [
 	])
 	.controller('RenderCtrl', function ($scope, BABYLON, $rootScene, CubeMapper, DatGUIHelper) {
 
-		$rootScene.init().then(function () {
+		$rootScene.init('renderCanvas').then(function () {
 			DatGUIHelper.init();
 		});
 

@@ -10,12 +10,12 @@ angular
 			this.engine = null;
 			this.scene = null;
 
-			this.init = function () {
+			this.init = function (elemId) {
 
 				var deferred = $q.defer();
 
 				// Get the canvas element from our HTML above
-				var canvas = document.getElementById('renderCanvas');
+				var canvas = document.getElementById(elemId);
 
 				window.devicePixelRatio = 1.0;
 

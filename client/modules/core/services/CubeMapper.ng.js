@@ -9,6 +9,11 @@ angular
 			this.skybox = null;
 
 			this.setCubeMap = function(cubemap) {
+
+				if (this.skybox) {
+					this.skybox.dispose();
+				}
+
 				this.skybox = BABYLON.Mesh.CreateBox('skyBox', 1000.0, $rootScene.scene);
 				var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', $rootScene.scene);
 				skyboxMaterial.backFaceCulling = false;

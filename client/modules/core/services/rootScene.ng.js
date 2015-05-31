@@ -4,7 +4,7 @@ angular
 		'babylon'
 	])
 	.service('$rootScene',
-		function(BABYLON, $q) {
+		function(BABYLON, $q, $window) {
 			'use strict';
 
 			this.engine = null;
@@ -47,6 +47,11 @@ angular
 
 				}, function (progress) {
 					// To do: give progress feedback to user
+				});
+
+				// Watch for browser/canvas resize events
+				$window.addEventListener('resize', function () {
+					me.engine.resize();
 				});
 
 				return deferred.promise;

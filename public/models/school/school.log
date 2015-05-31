@@ -72,6 +72,14 @@
 	Diffuse texture found
 	processing begun of material:  school.tali
 	Diffuse texture found
+	processing begun of mesh:  walls collisions
+		processing begun of multimaterial:  school.Multimaterial#0
+		num positions      :  734
+		num normals        :  734
+		num uvs            :  1468
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  2115
 	processing begun of mesh:  Circle
 		num positions      :  79
 		num normals        :  79
@@ -88,7 +96,7 @@
 		num colors         :  0
 		num indices        :  84
 	processing begun of mesh:  Mesh57 bottom2 Computer_Laptop_Silver1 Model
-		processing begun of multimaterial:  school.Multimaterial#0
+		processing begun of multimaterial:  school.Multimaterial#1
 		num positions      :  106
 		num normals        :  106
 		num uvs            :  212
@@ -110,7 +118,7 @@
 		num colors         :  0
 		num indices        :  84
 	processing begun of mesh:  Mesh58 top1 Computer_Laptop_Silver1 Model
-		processing begun of multimaterial:  school.Multimaterial#1
+		processing begun of multimaterial:  school.Multimaterial#2
 		num positions      :  101
 		num normals        :  101
 		num uvs            :  202
@@ -279,7 +287,7 @@
 		num colors         :  0
 		num indices        :  84
 	processing begun of mesh:  Mesh19 table_half1 Desk_Computer_30x36x27_1 Model
-		processing begun of multimaterial:  school.Multimaterial#2
+		processing begun of multimaterial:  school.Multimaterial#3
 		num positions      :  237
 		num normals        :  237
 		num uvs            :  474
@@ -329,7 +337,7 @@
 		num colors         :  0
 		num indices        :  276
 	processing begun of mesh:  Mesh189 plasma_3_1 Model
-		processing begun of multimaterial:  school.Multimaterial#3
+		processing begun of multimaterial:  school.Multimaterial#4
 		num positions      :  60
 		num normals        :  60
 		num uvs            :  120
@@ -400,7 +408,7 @@
 		num colors         :  0
 		num indices        :  432
 	processing begun of mesh:  Mesh54 table_half5 Desk_Computer_30x36x27_3 Model
-		processing begun of multimaterial:  school.Multimaterial#4
+		processing begun of multimaterial:  school.Multimaterial#5
 		num positions      :  240
 		num normals        :  240
 		num uvs            :  480
@@ -415,7 +423,7 @@
 		num colors         :  0
 		num indices        :  96
 	processing begun of mesh:  Mesh10 Group8 Model
-		processing begun of multimaterial:  school.Multimaterial#5
+		processing begun of multimaterial:  school.Multimaterial#6
 		num positions      :  2928
 		num normals        :  2928
 		num uvs            :  5856
@@ -500,7 +508,7 @@
 		num colors         :  0
 		num indices        :  276
 	processing begun of mesh:  Mesh52 table_half3 Desk_Computer_30x36x27_2 Model
-		processing begun of multimaterial:  school.Multimaterial#6
+		processing begun of multimaterial:  school.Multimaterial#7
 		num positions      :  238
 		num normals        :  238
 		num uvs            :  476
@@ -641,7 +649,7 @@
 		num colors         :  0
 		num indices        :  60
 	processing begun of mesh:  Mesh191 plasma_5_1 Model
-		processing begun of multimaterial:  school.Multimaterial#7
+		processing begun of multimaterial:  school.Multimaterial#8
 		num positions      :  60
 		num normals        :  60
 		num uvs            :  120
@@ -649,7 +657,7 @@
 		num colors         :  0
 		num indices        :  78
 	processing begun of mesh:  Mesh81 plasma_1_1 Model
-		processing begun of multimaterial:  school.Multimaterial#8
+		processing begun of multimaterial:  school.Multimaterial#9
 		num positions      :  60
 		num normals        :  60
 		num uvs            :  120
@@ -706,7 +714,7 @@
 		num colors         :  0
 		num indices        :  432
 	processing begun of mesh:  Mesh61 plasma_2_1 Model
-		processing begun of multimaterial:  school.Multimaterial#9
+		processing begun of multimaterial:  school.Multimaterial#10
 		num positions      :  60
 		num normals        :  60
 		num uvs            :  120
@@ -757,7 +765,7 @@
 		num colors         :  0
 		num indices        :  276
 	processing begun of mesh:  Mesh56 bottom1 Computer_Laptop_Silver1 Model
-		processing begun of multimaterial:  school.Multimaterial#10
+		processing begun of multimaterial:  school.Multimaterial#11
 		num positions      :  104
 		num normals        :  104
 		num uvs            :  208
@@ -779,7 +787,7 @@
 		num colors         :  0
 		num indices        :  432
 	processing begun of mesh:  Mesh20 table_half2 Desk_Computer_30x36x27_1 Model
-		processing begun of multimaterial:  school.Multimaterial#11
+		processing begun of multimaterial:  school.Multimaterial#12
 		num positions      :  233
 		num normals        :  233
 		num uvs            :  466
@@ -941,7 +949,7 @@
 		num colors         :  0
 		num indices        :  132
 	processing begun of mesh:  Mesh59 top2 Computer_Laptop_Silver1 Model
-		processing begun of multimaterial:  school.Multimaterial#12
+		processing begun of multimaterial:  school.Multimaterial#13
 		num positions      :  99
 		num normals        :  99
 		num uvs            :  198
@@ -963,7 +971,7 @@
 		num colors         :  0
 		num indices        :  264
 	processing begun of mesh:  Mesh53 table_half4 Desk_Computer_30x36x27_2 Model
-		processing begun of multimaterial:  school.Multimaterial#13
+		processing begun of multimaterial:  school.Multimaterial#14
 		num positions      :  235
 		num normals        :  235
 		num uvs            :  470
@@ -1041,7 +1049,7 @@
 		num colors         :  0
 		num indices        :  36
 	processing begun of mesh:  Mesh16 Group14 Model
-		processing begun of multimaterial:  school.Multimaterial#14
+		processing begun of multimaterial:  school.Multimaterial#15
 		num positions      :  11502
 		num normals        :  11502
 		num uvs            :  23004
@@ -1084,7 +1092,7 @@
 		num colors         :  0
 		num indices        :  60
 	processing begun of mesh:  Mesh55 table_half6 Desk_Computer_30x36x27_3 Model
-		processing begun of multimaterial:  school.Multimaterial#15
+		processing begun of multimaterial:  school.Multimaterial#16
 		num positions      :  236
 		num normals        :  236
 		num uvs            :  472
@@ -1162,7 +1170,7 @@
 		num colors         :  0
 		num indices        :  324
 	processing begun of mesh:  Mesh195 Shrub_2D_Juniper_Medora2 Model
-		processing begun of multimaterial:  school.Multimaterial#16
+		processing begun of multimaterial:  school.Multimaterial#17
 		num positions      :  243
 		num normals        :  243
 		num uvs            :  486
@@ -1289,7 +1297,7 @@
 		num colors         :  0
 		num indices        :  24
 	processing begun of mesh:  Mesh193 Shrub_2D_Juniper_Medora1 Model
-		processing begun of multimaterial:  school.Multimaterial#17
+		processing begun of multimaterial:  school.Multimaterial#18
 		num positions      :  243
 		num normals        :  243
 		num uvs            :  486
@@ -1325,7 +1333,7 @@
 		num colors         :  0
 		num indices        :  330
 	processing begun of mesh:  Mesh72 Keyboard Computer_Desktop_iMac1 Model
-		processing begun of multimaterial:  school.Multimaterial#18
+		processing begun of multimaterial:  school.Multimaterial#19
 		num positions      :  47
 		num normals        :  47
 		num uvs            :  94
@@ -1410,7 +1418,7 @@
 		num colors         :  0
 		num indices        :  24
 	processing begun of mesh:  Mesh107 plasma1 Model
-		processing begun of multimaterial:  school.Multimaterial#19
+		processing begun of multimaterial:  school.Multimaterial#20
 		num positions      :  60
 		num normals        :  60
 		num uvs            :  120
@@ -1439,7 +1447,7 @@
 		num colors         :  0
 		num indices        :  102
 	processing begun of mesh:  Mesh187 plasma_4_1 Model
-		processing begun of multimaterial:  school.Multimaterial#20
+		processing begun of multimaterial:  school.Multimaterial#21
 		num positions      :  61
 		num normals        :  61
 		num uvs            :  122
@@ -1545,7 +1553,7 @@
 		num colors         :  0
 		num indices        :  180
 	processing begun of mesh:  Mesh75 half2_1_2 Monitor Computer_Desktop_iMac1 Model
-		processing begun of multimaterial:  school.Multimaterial#21
+		processing begun of multimaterial:  school.Multimaterial#22
 		num positions      :  154
 		num normals        :  154
 		num uvs            :  308
@@ -1658,7 +1666,7 @@
 		num colors         :  0
 		num indices        :  42
 	processing begun of mesh:  Mesh74 half2_1_1 Monitor Computer_Desktop_iMac1 Model
-		processing begun of multimaterial:  school.Multimaterial#22
+		processing begun of multimaterial:  school.Multimaterial#23
 		num positions      :  155
 		num normals        :  155
 		num uvs            :  310
@@ -1687,7 +1695,7 @@
 		num colors         :  0
 		num indices        :  84
 	processing begun of mesh:  Mesh222 Model
-		processing begun of multimaterial:  school.Multimaterial#23
+		processing begun of multimaterial:  school.Multimaterial#24
 		num positions      :  12708
 		num normals        :  12708
 		num uvs            :  25416

@@ -3,10 +3,9 @@
 angular.module('vmp.render', [
 		'vmp.core',
 		'vmp.ui',
-		'angular-meteor',
-		'babylon'
+		'angular-meteor'
 	])
-	.controller('RenderCtrl', function ($scope, BABYLON, $rootScene, CubeMapper, DatGUIHelper) {
+	.controller('RenderCtrl', function ($scope, $rootScene, CubeMapper, DatGUIHelper) {
 
 		$rootScene.init('renderCanvas').then(function () {
 			DatGUIHelper.init();

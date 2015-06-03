@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.72.0 commit date:2014-10-03, commit time:13:58, hash:95182d1</authoring_tool>
     </contributor>
-    <created>2015-06-03T09:21:25</created>
-    <modified>2015-06-03T09:21:25</modified>
+    <created>2015-06-03T11:37:04</created>
+    <modified>2015-06-03T11:37:04</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -195,7 +195,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Plane" name="Plane" type="NODE">
-        <matrix sid="transform">50 0 0 0 0 50 0 0 0 0 1 0 0 0 0 1</matrix>
+        <matrix sid="transform">50 0 0 0 0 50 0 0 0 0 1 -5.325721 0 0 0 1</matrix>
         <instance_geometry url="#Plane-mesh">
           <bind_material>
             <technique_common>
@@ -209,7 +209,7 @@
         <instance_light url="#Hemi-light"/>
       </node>
       <node id="Camera" name="Camera" type="NODE">
-        <matrix sid="transform">-0.9265252 -0.1600825 0.340477 5.124961 0.375988 -0.3613386 0.8532687 8.512947 -0.01356592 0.9185902 0.3949784 7.239501 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 5.124961 0 -4.37114e-8 -1 -1.221213 0 1 -4.37114e-8 2.479129 0 0 0 1</matrix>
         <instance_camera url="#Camera-camera"/>
       </node>
     </visual_scene>

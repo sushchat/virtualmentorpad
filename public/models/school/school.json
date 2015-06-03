@@ -1,0 +1,78 @@
+{
+    "geometries": [{
+        "uuid": "87DAB310-D963-3818-983F-46E01A49B4FE",
+        "type": "Geometry",
+        "data": {
+            "vertices": [-1,-1,0,1,-1,0,-1,1,0,1,1,0],
+            "name": "PlaneGeometry.4",
+            "metadata": {
+                "vertices": 4,
+                "generator": "io_three",
+                "version": 3,
+                "faces": 1,
+                "normals": 1,
+                "uvs": 1
+            },
+            "faces": [41,0,1,3,2,0,1,2,3,0,0,0,0],
+            "normals": [0,0,1],
+            "uvs": [[0,0,1,0,1,1,0,1]]
+        }
+    }],
+    "object": {
+        "type": "Scene",
+        "uuid": "5983D8EB-BC15-405E-82AC-389CD83ED62D",
+        "matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+        "children": [{
+            "type": "PerspectiveCamera",
+            "name": "Camera",
+            "uuid": "DE0714B3-5D16-30EF-9A0A-6C5D6DD394B9",
+            "matrix": [0.926525,-0.013566,0.375988,0,0.160083,0.91859,-0.361339,0,-0.340477,0.394978,0.853269,0,-5.12496,7.2395,8.51295,1],
+            "visible": true,
+            "far": 100,
+            "near": 0.1,
+            "aspect": 1.77778,
+            "fov": 35
+        },{
+            "type": "HemisphereLight",
+            "name": "Hemi",
+            "uuid": "22CFB302-A60E-370A-B795-CE269BF98925",
+            "matrix": [-1,0,0,0,0,0,1,0,0,1,0,0,-6.68256,13.3522,-6.21877,1],
+            "visible": true,
+            "color": 16777215,
+            "intensity": 1,
+            "distance": 25
+        },{
+            "type": "Mesh",
+            "name": "Plane",
+            "uuid": "631279BD-3DB0-34E6-BE17-B19991DEF360",
+            "matrix": [-50,0,0,0,0,0,50,0,0,1,0,0,0,0,0,1],
+            "visible": true,
+            "material": "FC9C3C1C-87E7-3748-8148-105003E5F3D5",
+            "castShadow": true,
+            "receiveShadow": true,
+            "geometry": "87DAB310-D963-3818-983F-46E01A49B4FE"
+        }]
+    },
+    "metadata": {
+        "type": "Object",
+        "version": 4.3,
+        "sourceFile": "school.blend",
+        "generator": "io_three"
+    },
+    "materials": [{
+        "blending": "NormalBlending",
+        "depthTest": true,
+        "emissive": 0,
+        "vertexColors": false,
+        "uuid": "FC9C3C1C-87E7-3748-8148-105003E5F3D5",
+        "name": "Material",
+        "color": 10724259,
+        "ambient": 10724259,
+        "type": "MeshPhongMaterial",
+        "depthWrite": true,
+        "shininess": 50,
+        "specular": 8355711
+    }],
+    "textures": [],
+    "images": []
+}

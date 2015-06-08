@@ -1,11 +1,19 @@
 // serves as the "main" world for the game system
 angular
 	.module('vmp.core.root-scene', [
-		'three'
+		'vmp.core.input.keyboard',
+		'vmp.core.input.keys',
+
+		'three',		
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window) {
+		function(THREE, $q, $window, Keyboard, KEYS) {
 			'use strict';
+
+			var controlsEnabled = false;
+
+			var prevTime = performance.now();
+			var velocity = new THREE.Vector3();
 
 			var rootScene = function () {
 				this.renderer = null;
@@ -42,44 +50,23 @@ angular
 
 					var dae = collada.scene;
 
-					dae.traverse(function (child) {
-						if (child instanceof THREE.PerspectiveCamera) {
-							me.camera = child;
-							window.camera = me.camera;
-						}
-					});
+					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100000 );
 
-					// dae.scale.x = dae.scale.y = dae.scale.z = 0.002;
 					dae.updateMatrix();
 					me.scene.add(dae);
 
+					me.controls = new THREE.PointerLockControls( me.camera );
+					me.scene.add( me.controls.getObject() );
 
-					// Collada wraps the camera in a parent object
-					// so we need to detach it from the parent
-					me.camera.parent.updateMatrixWorld();
-					THREE.SceneUtils.detach(me.camera, me.camera.parent, me.scene);
-					// THREE.SceneUtils.attach(child, dae, dae.parent.parent);
-
-
-					// me.controls = new THREE.FirstPersonControls( me.camera );
-	    //             me.controls.movementSpeed = 1;
-	    //             me.controls.lookSpeed = 0.05;
-	    //             me.controls.noFly = true;
-	                // me.controls.lookVertical = false;
-					me.controls = new THREE.OrbitControls(me.camera, canvas);
-					// me.controls.autoRotate = true;
-					me.controls.damping = 0.2;
-
-					// me.controls = new THREE.FlyControls( me.camera );
-					// me.controls.movementSpeed = 100.0;
-					// me.controls.rollSpeed = 0.5;
-					// me.controls.dragToLook = true;
-
-					// me.controls = new THREE.PointerLockControls( camera );
-					// me.scene.add( controls.getObject() );
+					dae.traverse(function (child) {
+						if (child instanceof THREE.PerspectiveCamera) {
+							child.updateMatrixWorld();
+							me.controls.getObject().position.copy(child.position);
+							window.controls = me.controls;
+						}
+					});					
 
 	                me.animate();
-
 
 					deferred.resolve();
 				});
@@ -101,15 +88,63 @@ angular
 			};
 
 			rootScene.prototype.update = function () {
-                this.controls.update(0.01);
-                // this.camera.position.x += 0.01;
+				if ( this.controls.enabled ) {
+
+					var moveForward = false;
+					var moveBackward = false;
+					var moveLeft = false;
+					var moveRight = false;					
+
+		            // keyboard controls
+		            if (Keyboard.getKey(KEYS.W) || Keyboard.getKey(KEYS.UP)) {
+		                moveForward = true;
+		            }
+
+		            if (Keyboard.getKey(KEYS.S) || Keyboard.getKey(KEYS.DOWN)) {
+		                moveBackward = true;
+		            }
+
+		            if (Keyboard.getKey(KEYS.A) || Keyboard.getKey(KEYS.LEFT)) {
+		                moveLeft = true;
+		            }
+
+		            if (Keyboard.getKey(KEYS.D) || Keyboard.getKey(KEYS.RIGHT)) {
+		                moveRight = true;
+		            }			
+
+					var time = performance.now();
+					var delta = ( time - prevTime ) / 1000;
+
+					velocity.x -= velocity.x * 10.0 * delta;
+					velocity.z -= velocity.z * 10.0 * delta;
+
+					if ( moveForward ) {
+						velocity.z -= 400.0 * delta;
+					}
+
+					if ( moveBackward ) {
+						velocity.z += 400.0 * delta;
+					}
+
+					if ( moveLeft ) {
+						velocity.x -= 400.0 * delta;
+					}
+
+					if ( moveRight ) {
+						velocity.x += 400.0 * delta;
+					}
+
+					this.controls.getObject().translateX( velocity.x * delta );
+					this.controls.getObject().translateZ( velocity.z * delta );
+
+					console.log(moveForward);
+
+					prevTime = time;
+
+				}  
 			};
 
 			rootScene.prototype.resize = function () {
-
-				// windowHalfX = window.innerWidth / 2;
-				// windowHalfY = window.innerHeight / 2;
-
 				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
 

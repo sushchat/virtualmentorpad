@@ -26,7 +26,6 @@ angular
 				// }
 
 				this.scene = new THREE.Scene();
-				this.skyboxScene = new THREE.Scene();
 
 				var me = this;
 
@@ -98,7 +97,6 @@ angular
 			}
 
 			rootScene.prototype.render = function () {
-				this.renderer.render( this.skyboxScene, this.camera );
 				this.renderer.render( this.scene, this.camera );
 			};
 
@@ -115,11 +113,7 @@ angular
 				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
 
-				// cameraCube.aspect = window.innerWidth / window.innerHeight;
-				// cameraCube.updateProjectionMatrix();
-
 				this.renderer.setSize( window.innerWidth, window.innerHeight );
-
 			}
 
 			return new rootScene();

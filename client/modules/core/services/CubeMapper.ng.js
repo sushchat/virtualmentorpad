@@ -14,7 +14,7 @@ angular
 				if (this.skybox) {
 					this.skybox.geometry.dispose();
 					this.skybox.material.dispose();
-					$rootScene.skyboxScene.remove(this.skybox);
+					$rootScene.scene.remove(this.skybox);
 				}
 
 				var path = 'textures/skybox/' + cubemap;
@@ -40,8 +40,8 @@ angular
 					side: THREE.BackSide
 				});
 
-				this.skybox = new THREE.Mesh(new THREE.BoxGeometry(100, 100, 100), material);
-				$rootScene.skyboxScene.add(this.skybox);
+				this.skybox = new THREE.Mesh(new THREE.BoxGeometry(10000, 10000, 10000), material);
+				$rootScene.scene.add(this.skybox);
 			};
 
 		}

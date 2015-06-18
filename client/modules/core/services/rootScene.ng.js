@@ -3,11 +3,12 @@ angular
 	.module('vmp.core.root-scene', [
 		'vmp.core.input.keyboard',
 		'vmp.core.input.keys',
+		'physijs',
 
-		'three',		
+		'three',	
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window, Keyboard, KEYS) {
+		function(THREE, $q, $window, Keyboard, KEYS, Physijs) {
 			'use strict';
 
 			var controlsEnabled = false;
@@ -22,6 +23,24 @@ angular
 				this.controls = null;
 			};
 
+			var createCapsuleGeometry = function () {
+			    var merged = new THREE.Geometry();
+			    var cyl = new THREE.CylinderGeometry(1, 1, 6);
+			    var top = new THREE.SphereGeometry(1);
+			    var bot = new THREE.SphereGeometry(1);
+			    var matrix = new THREE.Matrix4();
+			    matrix.makeTranslation(0, 0.5, 0);
+			    top.applyMatrix(matrix);
+			    var matrix = new THREE.Matrix4();
+			    matrix.makeTranslation(0, -0.5, 0);
+			    bot.applyMatrix(matrix);
+			    // merge to create a capsule
+			    merged.merge(top);
+			    merged.merge(bot);
+			    // merged.merge(cyl);
+			    return merged;
+			};			
+
 			rootScene.prototype.init = function (elemId) {
 
 				var deferred = $q.defer();
@@ -29,11 +48,7 @@ angular
 				// Get the canvas element from our HTML above
 				var canvas = document.getElementById(elemId);
 
-				// if(navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
-				// 	window.devicePixelRatio = 1.0;
-				// }
-
-				this.scene = new THREE.Scene();
+				this.scene = new Physijs.Scene();
 
 				var me = this;
 
@@ -50,19 +65,55 @@ angular
 
 					var dae = collada.scene;
 
-					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100000 );
+					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
 
 					dae.updateMatrix();
+					// var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
+					// physicsWorld.position.copy(dae.position);
 					me.scene.add(dae);
 
 					me.controls = new THREE.PointerLockControls( me.camera );
-					me.scene.add( me.controls.getObject() );
+
+					var capsule_geometry = createCapsuleGeometry();
+					var material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
+
+					var player = new Physijs.CapsuleMesh(
+						capsule_geometry,
+						material,
+						undefined,
+						{ restitution: Math.random() * 1.5 }
+					);
+					player.add(me.controls.getObject());
+					me.scene.add( player );
+
+					player.setAngularFactor(new THREE.Vector3(0, 0, 0));
+					// player.setLinearFactor(new THREE.Vector3(0, 0, 0));
+
+					window.player = player;
+
+					var collisionObjects = [];
+
+					dae.children.forEach(function (child) {
+						if (child.name === 'ColBox') {
+							// Set to invisible and add to Physijs
+							child.visible = false;
+
+							var wrappedChild = child.children[0];
+
+							var physicsMesh = new Physijs.BoxMesh(wrappedChild.geometry, wrappedChild.material, 0);
+							physicsMesh.position.copy(child.position);
+							me.scene.add(physicsMesh);
+						}
+						// else {
+						// 	// child.visible = false;
+						// }
+					});
 
 					dae.traverse(function (child) {
 						if (child instanceof THREE.PerspectiveCamera) {
 							child.updateMatrixWorld();
-							me.controls.getObject().position.copy(child.position);
-							window.controls = me.controls;
+							player.position.copy(child.parent.position);
+							player.__dirtyPosition = true;
 						}
 					});					
 
@@ -79,6 +130,7 @@ angular
 			rootScene.prototype.animate = function () {
 				requestAnimationFrame(this.animate.bind(this));
 
+				this.scene.simulate();
 				this.render();
 				this.update();
 			}
@@ -115,29 +167,25 @@ angular
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
 
-					velocity.x -= velocity.x * 10.0 * delta;
-					velocity.z -= velocity.z * 10.0 * delta;
+	                var inputVector = new THREE.Vector3();
 
-					if ( moveForward ) {
-						velocity.z -= 400.0 * delta;
-					}
+	                // react to changes
+	                if (moveForward) {
+	                    inputVector.z -= 1;
+	                }
+	                if (moveBackward) {
+	                    inputVector.z += 1;
+	                }
+	                if (moveLeft) {
+	                    inputVector.x -= 1;
+	                }
+	                if (moveRight) {
+	                    inputVector.x += 1;
+	                }
 
-					if ( moveBackward ) {
-						velocity.z += 400.0 * delta;
-					}
+					this.controls.rotateVec(inputVector);
 
-					if ( moveLeft ) {
-						velocity.x -= 400.0 * delta;
-					}
-
-					if ( moveRight ) {
-						velocity.x += 400.0 * delta;
-					}
-
-					this.controls.getObject().translateX( velocity.x * delta );
-					this.controls.getObject().translateZ( velocity.z * delta );
-
-					console.log(moveForward);
+					player.applyCentralImpulse(inputVector);
 
 					prevTime = time;
 

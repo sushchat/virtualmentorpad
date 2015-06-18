@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.72.0 commit date:2014-10-03, commit time:13:58, hash:95182d1</authoring_tool>
     </contributor>
-    <created>2015-06-03T12:20:49</created>
-    <modified>2015-06-03T12:20:49</modified>
+    <created>2015-06-18T19:11:17</created>
+    <modified>2015-06-18T19:11:17</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -35,7 +35,7 @@
     <light id="Hemi-light" name="Hemi">
       <technique_common>
         <ambient>
-          <color>0.8 0.8 0.8</color>
+          <color>0.6 0.6 0.6</color>
         </ambient>
       </technique_common>
       <extra>
@@ -61,7 +61,7 @@
           <clipsta>0.5</clipsta>
           <compressthresh>0.04999995</compressthresh>
           <dist sid="blender_dist">25</dist>
-          <energy sid="blender_energy">0.8</energy>
+          <energy sid="blender_energy">0.6</energy>
           <falloff_type>2</falloff_type>
           <filtertype>0</filtertype>
           <flag>0</flag>
@@ -731,7 +731,7 @@
           </technique_common>
         </source>
         <source id="Plane-mesh-map-0">
-          <float_array id="Plane-mesh-map-0-array" count="12">0 0 1 0 1 1 0 1 0 0 1 1</float_array>
+          <float_array id="Plane-mesh-map-0-array" count="12">0.7998657 0.1959381 100.7999 0.1959381 100.7999 100.1959 0.7998657 100.1959 0.7998657 0.1959381 100.7999 100.1959</float_array>
           <technique_common>
             <accessor source="#Plane-mesh-map-0-array" count="6" stride="2">
               <param name="S" type="float"/>
@@ -1438,12 +1438,45 @@
         </polylist>
       </mesh>
     </geometry>
+    <geometry id="Cube-mesh" name="Cube">
+      <mesh>
+        <source id="Cube-mesh-positions">
+          <float_array id="Cube-mesh-positions-array" count="24">-4.802569 -4.188319 0.4107772 -4.802569 3.461264 0.4107772 5.972929 3.461264 0.4107772 5.972929 -4.188319 0.4107772 -4.802569 -4.188319 0.435374 -4.802569 3.461264 0.435374 5.972929 3.461264 0.435374 5.972929 -4.188319 0.435374</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube-mesh-normals">
+          <float_array id="Cube-mesh-normals-array" count="36">-1 0 0 0 1 0 1 0 0 0 -1 0 0 0 -1 0 0 1 -1 0 0 0 1 0 1 0 0 0 -1 0 0 0 -1 0 0 1</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-normals-array" count="12" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube-mesh-vertices">
+          <input semantic="POSITION" source="#Cube-mesh-positions"/>
+        </vertices>
+        <polylist count="12">
+          <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>4 0 5 0 1 0 5 1 6 1 2 1 6 2 7 2 3 2 7 3 4 3 0 3 0 4 1 4 2 4 7 5 6 5 5 5 0 6 4 6 1 6 1 7 5 7 2 7 2 8 6 8 3 8 3 9 7 9 0 9 3 10 0 10 2 10 4 11 7 11 5 11</p>
+        </polylist>
+      </mesh>
+    </geometry>
   </library_geometries>
   <library_controllers/>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Plane" name="Plane" type="NODE">
-        <matrix sid="transform">50 0 0 0 0 50 0 0 0 0 1 -5.325721 0 0 0 1</matrix>
+        <matrix sid="transform">31.955 0 0 0.3259973 0 31.955 0 -0.2860814 0 0 0.6390999 0 0 0 0 1</matrix>
         <instance_geometry url="#Plane-mesh">
           <bind_material>
             <technique_common>
@@ -1453,15 +1486,15 @@
         </instance_geometry>
       </node>
       <node id="Hemi" name="Hemi" type="NODE">
-        <matrix sid="transform">1 0 0 6.682559 0 1 0 -6.218771 0 0 1 13.35217 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 4.59682 0 0.6390999 0 -4.260497 0 0 0.6390999 8.841621 0 0 0 1</matrix>
         <instance_light url="#Hemi-light"/>
       </node>
       <node id="Camera" name="Camera" type="NODE">
-        <matrix sid="transform">1 0 0 5.124961 0 -4.37114e-8 -1 -1.221213 0 1 -4.37114e-8 2.479129 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 1.670954 0 -2.79359e-8 -0.6390999 -1.066559 0 0.6390999 -2.79359e-8 1.502914 0 0 0 1</matrix>
         <instance_camera url="#Camera-camera"/>
       </node>
       <node id="curtain01_1" name="curtain01_1" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#curtain01_1-mesh">
           <bind_material>
             <technique_common>
@@ -1471,7 +1504,7 @@
         </instance_geometry>
       </node>
       <node id="wall_004" name="wall_004" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#wall_004-mesh">
           <bind_material>
             <technique_common>
@@ -1481,7 +1514,7 @@
         </instance_geometry>
       </node>
       <node id="lamp01_1" name="lamp01_1" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#lamp01_1-mesh">
           <bind_material>
             <technique_common>
@@ -1491,7 +1524,7 @@
         </instance_geometry>
       </node>
       <node id="curtain01_rail" name="curtain01_rail" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#curtain01_rail-mesh">
           <bind_material>
             <technique_common>
@@ -1501,7 +1534,7 @@
         </instance_geometry>
       </node>
       <node id="ceiling_004" name="ceiling_004" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#ceiling_004-mesh">
           <bind_material>
             <technique_common>
@@ -1511,7 +1544,7 @@
         </instance_geometry>
       </node>
       <node id="door1" name="door1" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#door1-mesh">
           <bind_material>
             <technique_common>
@@ -1522,7 +1555,7 @@
         </instance_geometry>
       </node>
       <node id="frame1" name="frame1" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#frame1-mesh">
           <bind_material>
             <technique_common>
@@ -1532,7 +1565,7 @@
         </instance_geometry>
       </node>
       <node id="pillar_1_004" name="pillar_1_004" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#pillar_1_004-mesh">
           <bind_material>
             <technique_common>
@@ -1542,7 +1575,7 @@
         </instance_geometry>
       </node>
       <node id="door01_pillar" name="door01_pillar" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#door01_pillar-mesh">
           <bind_material>
             <technique_common>
@@ -1552,7 +1585,7 @@
         </instance_geometry>
       </node>
       <node id="floor_004" name="floor_004" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#floor_004-mesh">
           <bind_material>
             <technique_common>
@@ -1562,7 +1595,7 @@
         </instance_geometry>
       </node>
       <node id="door2" name="door2" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#door2-mesh">
           <bind_material>
             <technique_common>
@@ -1573,7 +1606,7 @@
         </instance_geometry>
       </node>
       <node id="frame" name="frame" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#frame-mesh">
           <bind_material>
             <technique_common>
@@ -1584,7 +1617,7 @@
         </instance_geometry>
       </node>
       <node id="win5" name="win5" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#win5-mesh">
           <bind_material>
             <technique_common>
@@ -1597,7 +1630,7 @@
         </instance_geometry>
       </node>
       <node id="pillar_2_004" name="pillar_2_004" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#pillar_2_004-mesh">
           <bind_material>
             <technique_common>
@@ -1607,7 +1640,7 @@
         </instance_geometry>
       </node>
       <node id="curtain01_5" name="curtain01_5" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 0.3259973 0 -1.04123e-7 -0.6390999 -0.2860814 0 0.6390999 -1.04123e-7 0.3082511 0 0 0 1</matrix>
         <instance_geometry url="#curtain01_5-mesh">
           <bind_material>
             <technique_common>
@@ -1617,8 +1650,12 @@
         </instance_geometry>
       </node>
       <node id="Hemi_001" name="Hemi_001" type="NODE">
-        <matrix sid="transform">1 0 0 8.375495 0 -1 8.74228e-8 -7.6211 0 -8.74228e-8 -1 14.63562 0 0 0 1</matrix>
+        <matrix sid="transform">0.6390999 0 0 5.678776 0 -0.6390999 5.58719e-8 -5.156726 0 -5.58719e-8 -0.6390999 9.661873 0 0 0 1</matrix>
         <instance_light url="#Hemi_001-light"/>
+      </node>
+      <node id="ColBox" name="ColBox" type="NODE">
+        <matrix sid="transform">0.7416569 0 0 0 0 0.7416569 0 0 0 0 0.7416569 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube-mesh"/>
       </node>
     </visual_scene>
   </library_visual_scenes>

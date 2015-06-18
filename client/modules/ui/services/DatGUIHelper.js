@@ -15,10 +15,10 @@ angular
 				sceneFolder.open();
 
 				var startData = {
-					Cubemap: 'niagara/niagara'
+					Cubemap: 'unity/1'
 				};
 
-				var cubeMapChanger = sceneFolder.add(startData, 'Cubemap', ['niagara/niagara', 'unity/1', 'unity2/1']);
+				var cubeMapChanger = sceneFolder.add(startData, 'Cubemap', ['niagara/niagara', 'unity/1']);
 
 				CubeMapper.setCubeMap(startData.Cubemap);
 

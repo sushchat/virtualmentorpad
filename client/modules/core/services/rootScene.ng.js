@@ -59,63 +59,79 @@ angular
 				this.renderer.setSize( window.innerWidth, window.innerHeight );
 				this.renderer.autoClear = false;
 
-				var loader = new THREE.ColladaLoader();
-				loader.options.convertUpAxis = true;
-				loader.load('models/school/school.dae', function (collada) {
+				var loader = new THREE.ObjectLoader();
+				loader.load('models/school/school.json', function (obj) {
 
-					var dae = collada.scene;
+					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );					
 
-					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
+		
+					
 
-					dae.updateMatrix();
-					// var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
-					// physicsWorld.position.copy(dae.position);
-					me.scene.add(dae);
+					// dae.updateMatrix();
+					// // var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
+					// // physicsWorld.position.copy(dae.position);
+					me.scene.add(obj);
 
 					me.controls = new THREE.PointerLockControls( me.camera );
 
 					var capsule_geometry = createCapsuleGeometry();
-					var material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
+					// var material = new THREE.MeshLambertMaterial({ opacity: 0.8, transparent: true, color: 0xff0000 });
+					var material = new THREE.MeshBasicMaterial();
 
 					var player = new Physijs.CapsuleMesh(
 						capsule_geometry,
 						material,
-						undefined,
-						{ restitution: Math.random() * 1.5 }
+						10
 					);
 					player.add(me.controls.getObject());
 					me.scene.add( player );
 
+					// var light = new THREE.AmbientLight( 0xcccccc ); // soft white light
+					// me.scene.add( light );					
+
 					player.setAngularFactor(new THREE.Vector3(0, 0, 0));
-					// player.setLinearFactor(new THREE.Vector3(0, 0, 0));
+					// player.setLinearFactor(new THREE.Vector3(1, 0, 1));
 
 					window.player = player;
 
-					var collisionObjects = [];
-
-					dae.children.forEach(function (child) {
-						if (child.name === 'ColBox') {
+					obj.traverse(function (child) {
+						if (child.name.indexOf('ColBox') !== -1 ){
+					
 							// Set to invisible and add to Physijs
-							child.visible = false;
+							
 
-							var wrappedChild = child.children[0];
-
-							var physicsMesh = new Physijs.BoxMesh(wrappedChild.geometry, wrappedChild.material, 0);
-							physicsMesh.position.copy(child.position);
+							var physicsMesh = new Physijs.BoxMesh(child.geometry, child.material, 0);
 							me.scene.add(physicsMesh);
+							physicsMesh.position.copy(child.position);
+							physicsMesh.rotation.copy(child.rotation);
+							physicsMesh.__dirtyPosition = true;	
+							physicsMesh.__dirtyRotation = true;	
+							console.log(child.position);
+
+							
+
+							// (function (physicsMesh, child) {
+							// 	setTimeout(function () {
+							// 		console.log(physicsMesh.position, child.position);
+							// 	}, 5000);
+							// })(physicsMesh, child);
+
+							child.visible = false;
+							physicsMesh.visible = false;
 						}
 						// else {
 						// 	// child.visible = false;
 						// }
 					});
 
-					dae.traverse(function (child) {
+					obj.traverse(function (child) {
 						if (child instanceof THREE.PerspectiveCamera) {
-							child.updateMatrixWorld();
-							player.position.copy(child.parent.position);
+							// child.updateMatrixWorld();
+							player.position.copy(child.position);
 							player.__dirtyPosition = true;
+							window.camera = me.camera;
 						}
-					});					
+					});			
 
 	                me.animate();
 

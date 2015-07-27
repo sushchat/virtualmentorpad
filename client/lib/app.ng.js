@@ -12,6 +12,9 @@ angular.module('vmp', [
 	// Disable sliding events
 	snapRemote.disable();
 })
+.constant('assetsUrl', (function () {
+	return location.hostname === 'localhost' ? 'http://localhost:8000/' : 'http://vmp.nickjanssen.com/'
+})())
 .run(function () {
 
 

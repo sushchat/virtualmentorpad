@@ -3,7 +3,7 @@ angular
 		'three'
 	])
 	.service('CubeMapper',
-		function (THREE, $rootScene) {
+		function (THREE, $rootScene, assetsUrl) {
 			'use strict';
 
 			this.skybox = null;
@@ -17,7 +17,7 @@ angular
 					$rootScene.scene.remove(this.skybox);
 				}
 
-				var path = 'textures/skybox/' + cubemap;
+				var path = assetsUrl + 'textures/skybox/' + cubemap;
 				var format = '.jpg';
 				var urls = [
 					path + '_px' + format, path + '_nx' + format,
@@ -25,6 +25,7 @@ angular
 					path + '_pz' + format, path + '_nz' + format
 				];
 
+				THREE.ImageUtils.crossOrigin = 'Anonymous';
 				var reflectionCube = THREE.ImageUtils.loadTextureCube(urls);
 				reflectionCube.format = THREE.RGBFormat;
 

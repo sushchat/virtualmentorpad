@@ -9,7 +9,7 @@ angular
 		'three',
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window, Keyboard, KEYS, Physijs, $modal, PointerLockHandler) {
+		function(THREE, $q, $window, Keyboard, KEYS, Physijs, $modal, PointerLockHandler, assetsUrl) {
 			'use strict';
 
 			var controlsEnabled = false;
@@ -77,7 +77,8 @@ angular
 				this.renderer.autoClear = false;
 
 				var loader = new THREE.ObjectLoader();
-				loader.load('models/school/scene.json', function (obj) {
+				loader.setCrossOrigin('Anonymous');
+				loader.load(assetsUrl + 'models/school/scene.json', function (obj) {
 
 					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
 

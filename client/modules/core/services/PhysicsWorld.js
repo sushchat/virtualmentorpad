@@ -3,12 +3,11 @@ angular
 		'three',
 		'physijs'
 	])
-	.service('PhysicsWorld',
-		function (THREE, Physijs, $rootScene) {
+	.run(function (Physijs, $rootScene, assetsUrl) {
 			'use strict';
 
 		    Physijs.scripts.worker = '/scripts/physijs_worker.js';
-		    Physijs.scripts.ammo = '/scripts/ammo.js';			
+		    Physijs.scripts.ammo = '/scripts/ammo.js';
 
 		}
 	);

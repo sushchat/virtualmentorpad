@@ -76,21 +76,34 @@ angular
 				this.renderer.setSize( window.innerWidth, window.innerHeight );
 				this.renderer.autoClear = false;
 
+				this.renderer.getSize = function () {
+					return {
+						width:  window.innerWidth,
+						height: window.innerHeight
+					};
+				};
+
+				this.vrEffect = new THREE.VREffect(this.renderer, function (err) {
+					if (err) {
+						console.error(err);
+					}
+				});
+				this.vrEffect.setSize( window.innerWidth, window.innerHeight );
+
+				this.vrManager = new WebVRManager(this.renderer, this.vrEffect, {hideButton: false});
+
 				var loader = new THREE.ObjectLoader();
 				loader.setCrossOrigin('Anonymous');
 				loader.load(assetsUrl + 'models/school/scene.json', function (obj) {
 
 					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
 
-
-
+					me.vrControls = new THREE.VRControls( me.camera );
 
 					// dae.updateMatrix();
 					// // var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
 					// // physicsWorld.position.copy(dae.position);
 					me.scene.add(obj);
-
-					me.controls = new THREE.PointerLockControls( me.camera );
 
 					var capsule_geometry = createCapsuleGeometry();
 					// var material = new THREE.MeshLambertMaterial({ opacity: 0.8, transparent: true, color: 0xff0000 });
@@ -101,7 +114,7 @@ angular
 						material,
 						10
 					);
-					player.add(me.controls.yawObject);
+					player.add(me.camera);
 					me.scene.add( player );
 
 					// var light = new THREE.AmbientLight( 0xcccccc ); // soft white light
@@ -177,11 +190,13 @@ angular
 			}
 
 			rootScene.prototype.render = function () {
-				this.renderer.render( this.scene, this.camera );
+				this.vrManager.render( this.scene, this.camera );
 			};
 
 			rootScene.prototype.update = function () {
-				if ( this.controls.enabled ) {
+				this.vrControls.update();
+
+				if ( false && this.controls.enabled ) {
 
 					var moveForward = false;
 					var moveBackward = false;
@@ -277,7 +292,8 @@ angular
 				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
 
-				this.renderer.setSize( window.innerWidth, window.innerHeight );
+				this.vrEffect.setSize( window.innerWidth, window.innerHeight );
+
 			}
 
 			return new rootScene();

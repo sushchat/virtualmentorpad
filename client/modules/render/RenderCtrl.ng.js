@@ -13,7 +13,6 @@ angular.module('vmp.render', [
 			$scope.loading = false;
 
 			DatGUIHelper.init();
-			PointerLockHandler.init($rootScene.controls);
 		});
 
 	});

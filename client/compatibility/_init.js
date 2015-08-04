@@ -1,1 +1,1 @@
-window.CARDBOARD_DEBUG = true;
+//window.CARDBOARD_DEBUG = true;

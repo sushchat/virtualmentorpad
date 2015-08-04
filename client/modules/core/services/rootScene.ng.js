@@ -106,36 +106,41 @@ angular
 
 
 					// Setup a game controller for mobile
-					GameController.init( {
-						left: {
-					        type: 'none'
-					    },
-					    right: {
-					        type: 'joystick',
-					        joystick: {
-					        	radius: 50,
-								touchMove: function(moveInfo) {
-				                    me.touchInputVector.x = moveInfo.normalizedX;
-				                    me.touchInputVector.z = -moveInfo.normalizedY;
-				                    me.touchInputVector.multiplyScalar(2);
-				                    console.log(me.touchInputVector)
-					            }
-					        }
-					    }
-					    // right: {
-					    //     position: {
-					    //         right: '5%'
-					    //     },
-					    //     type: 'buttons',
-					    //     buttons: [
-					    //     {
-					    //         label: 'jump', fontSize: 13, touchStart: function() {
-					    //             // do something
-					    //         }
-					    //     },
-					    //     false, false, false
-					    //     ]
-					    // }
+					// GameController.init( {
+					// 	left: {
+					//         type: 'none'
+					//     },
+					//     right: {
+					//         type: 'joystick',
+					//         joystick: {
+					//         	radius: 50,
+					// 			touchMove: function(moveInfo) {
+				 //                    me.touchInputVector.x = moveInfo.normalizedX;
+				 //                    me.touchInputVector.z = -moveInfo.normalizedY;
+				 //                    me.touchInputVector.multiplyScalar(2);
+				 //                    console.log(me.touchInputVector)
+					//             }
+					//         }
+					//     }
+					//     // right: {
+					//     //     position: {
+					//     //         right: '5%'
+					//     //     },
+					//     //     type: 'buttons',
+					//     //     buttons: [
+					//     //     {
+					//     //         label: 'jump', fontSize: 13, touchStart: function() {
+					//     //             // do something
+					//     //         }
+					//     //     },
+					//     //     false, false, false
+					//     //     ]
+					//     // }
+					// });
+
+					document.addEventListener( 'touchstart', function () {
+						console.log('touchstart');
+						me.touchInputVector.set(0,0,-1)
 					});
 
 					document.addEventListener( 'touchend', function () {

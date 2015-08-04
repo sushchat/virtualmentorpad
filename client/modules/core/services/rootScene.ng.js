@@ -3,14 +3,14 @@ angular
 	.module('vmp.core.root-scene', [
 		'vmp.core.input.keyboard',
 		'vmp.core.input.keys',
+		'vmp.core.input.gameController',
 		'vmp.core.pointerlockhandler',
 		'physijs',
 
 		'three',
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window, Keyboard, KEYS, Physijs, $modal, PointerLockHandler, assetsUrl) {
-			'use strict';
+		function(THREE, $q, $window, Keyboard, KEYS, Physijs, $modal, PointerLockHandler, assetsUrl, GameController) {
 
 			var controlsEnabled = false;
 
@@ -19,6 +19,8 @@ angular
 
 			var gameObjects = {};
 			var isNearbyKiosk = false;
+
+			var player = null;
 
 			var rootScene = function () {
 				this.renderer = null;
@@ -92,6 +94,8 @@ angular
 
 				this.vrManager = new WebVRManager(this.renderer, this.vrEffect, {hideButton: false});
 
+				this.touchInputVector = new THREE.Vector3();
+
 				var loader = new THREE.ObjectLoader();
 				loader.setCrossOrigin('Anonymous');
 				loader.load(assetsUrl + 'models/school/scene.json', function (obj) {
@@ -99,6 +103,45 @@ angular
 					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
 
 					me.vrControls = new THREE.VRControls( me.camera );
+
+
+					// Setup a game controller for mobile
+					GameController.init( {
+						left: {
+					        type: 'none'
+					    },
+					    right: {
+					        type: 'joystick',
+					        joystick: {
+					        	radius: 50,
+								touchMove: function(moveInfo) {
+				                    me.touchInputVector.x = moveInfo.normalizedX;
+				                    me.touchInputVector.z = -moveInfo.normalizedY;
+				                    me.touchInputVector.multiplyScalar(2);
+				                    console.log(me.touchInputVector)
+					            }
+					        }
+					    }
+					    // right: {
+					    //     position: {
+					    //         right: '5%'
+					    //     },
+					    //     type: 'buttons',
+					    //     buttons: [
+					    //     {
+					    //         label: 'jump', fontSize: 13, touchStart: function() {
+					    //             // do something
+					    //         }
+					    //     },
+					    //     false, false, false
+					    //     ]
+					    // }
+					});
+
+					document.addEventListener( 'touchend', function () {
+						console.log('touchend');
+						me.touchInputVector.set(0,0,0)
+					});
 
 					// dae.updateMatrix();
 					// // var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
@@ -109,7 +152,7 @@ angular
 					// var material = new THREE.MeshLambertMaterial({ opacity: 0.8, transparent: true, color: 0xff0000 });
 					var material = new THREE.MeshBasicMaterial();
 
-					var player = new Physijs.CapsuleMesh(
+					player = new Physijs.CapsuleMesh(
 						capsule_geometry,
 						material,
 						10
@@ -123,7 +166,6 @@ angular
 					player.setAngularFactor(new THREE.Vector3(0, 0, 0));
 					// player.setLinearFactor(new THREE.Vector3(1, 0, 1));
 
-					window.player = player;
 
 					obj.traverse(function (child) {
 						switch(child.userData.type) {
@@ -196,7 +238,7 @@ angular
 			rootScene.prototype.update = function () {
 				this.vrControls.update();
 
-				if ( false && this.controls.enabled ) {
+				if ( true ) {
 
 					var moveForward = false;
 					var moveBackward = false;
@@ -239,7 +281,9 @@ angular
 	                    inputVector.x += 1;
 	                }
 
-					this.controls.rotateVec(inputVector);
+	                inputVector.add(this.touchInputVector);
+
+					inputVector.applyQuaternion(this.camera.quaternion);
 
 					player.applyCentralImpulse(inputVector);
 
@@ -289,11 +333,12 @@ angular
 			};
 
 			rootScene.prototype.resize = function () {
-				this.camera.aspect = window.innerWidth / window.innerHeight;
-				this.camera.updateProjectionMatrix();
+				if (this.camera) {
+					this.camera.aspect = window.innerWidth / window.innerHeight;
+					this.camera.updateProjectionMatrix();
 
-				this.vrEffect.setSize( window.innerWidth, window.innerHeight );
-
+					this.vrEffect.setSize( window.innerWidth, window.innerHeight );
+				}
 			}
 
 			return new rootScene();

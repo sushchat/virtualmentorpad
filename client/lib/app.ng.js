@@ -13,7 +13,7 @@ angular.module('vmp', [
 	snapRemote.disable();
 })
 .constant('assetsUrl', (function () {
-	return location.hostname === 'localhost' ? 'http://localhost:8000/' : 'http://vmp.nickjanssen.com/'
+	return ['localhost', '192.168.0.100'].indexOf(location.hostname) !== -1 ? 'http://' + location.hostname + ':8000/' : 'http://vmp.nickjanssen.com/'
 })())
 .run(function () {
 

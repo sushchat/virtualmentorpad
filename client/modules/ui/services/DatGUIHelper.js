@@ -9,22 +9,22 @@ angular
 
 			this.init = function () {
 
-				var gui = new dat.GUI();
+				// var gui = new dat.GUI();
 
-				var sceneFolder = gui.addFolder("Scene");
-				sceneFolder.open();
+				// var sceneFolder = gui.addFolder("Scene");
+				// sceneFolder.open();
 
 				var startData = {
 					Cubemap: 'unity/1'
 				};
 
-				var cubeMapChanger = sceneFolder.add(startData, 'Cubemap', ['niagara/niagara', 'unity/1']);
+				// var cubeMapChanger = sceneFolder.add(startData, 'Cubemap', ['niagara/niagara', 'unity/1']);
 
 				CubeMapper.setCubeMap(startData.Cubemap);
 
-				cubeMapChanger.onFinishChange(function (value) {
-					CubeMapper.setCubeMap(value);
-				});
+				// cubeMapChanger.onFinishChange(function (value) {
+				// 	CubeMapper.setCubeMap(value);
+				// });
 
 
 			};

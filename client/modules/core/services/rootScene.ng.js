@@ -5,12 +5,12 @@ angular
 		'vmp.core.input.keys',
 		'vmp.core.input.gameController',
 		'vmp.core.pointerlockhandler',
-		'physijs',
 
 		'three',
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window, Keyboard, KEYS, Physijs, $modal, PointerLockHandler, assetsUrl, GameController) {
+		function(THREE, $q, $window, Keyboard, KEYS, $modal, PointerLockHandler, assetsUrl, GameController) {
+			'use strict';
 
 			var controlsEnabled = false;
 
@@ -54,10 +54,10 @@ angular
 				// For now, rotations need to be hardcoded
 				// as I'm unable to change the pointerlockcontrols rotation straight
 				// from a matrix
-				var yawObject = player.children[0];
-				if (target.name === 'PlayerStartHall') {
-					yawObject.rotation.y = Math.PI / 2;
-				}
+				// var yawObject = player.children[0];
+				// if (target.name === 'PlayerStartHall') {
+				// 	yawObject.rotation.y = Math.PI / 2;
+				// }
 			};
 
 			rootScene.prototype.init = function (elemId) {
@@ -67,7 +67,7 @@ angular
 				// Get the canvas element from our HTML above
 				var canvas = document.getElementById(elemId);
 
-				this.scene = new Physijs.Scene();
+				this.scene = new THREE.Scene();
 
 				var me = this;
 
@@ -75,8 +75,9 @@ angular
 					canvas: canvas
 				});
 				this.renderer.setPixelRatio( 1.0 );
+				this.renderer.setClearColor( 0xff0000 );
 				this.renderer.setSize( window.innerWidth, window.innerHeight );
-				this.renderer.autoClear = false;
+				// this.renderer.autoClear = false;
 
 				this.renderer.getSize = function () {
 					return {
@@ -157,38 +158,34 @@ angular
 					// var material = new THREE.MeshLambertMaterial({ opacity: 0.8, transparent: true, color: 0xff0000 });
 					var material = new THREE.MeshBasicMaterial();
 
-					player = new Physijs.CapsuleMesh(
-						capsule_geometry,
-						material,
-						10
-					);
+					player = new THREE.Object3D();
 					player.add(me.camera);
 					me.scene.add( player );
 
 					// var light = new THREE.AmbientLight( 0xcccccc ); // soft white light
 					// me.scene.add( light );
 
-					player.setAngularFactor(new THREE.Vector3(0, 0, 0));
+					// player.setAngularFactor(new THREE.Vector3(0, 0, 0));
 					// player.setLinearFactor(new THREE.Vector3(1, 0, 1));
 
 
 					obj.traverse(function (child) {
-						switch(child.userData.type) {
-							case 'BoxCollider':
-								var geometry = new THREE.BoxGeometry(child.userData.size[0]*child.parent.scale.x, child.userData.size[1]*child.parent.scale.y, child.userData.size[2]*child.parent.scale.z);
-								var physicsMesh = new Physijs.BoxMesh(geometry, new THREE.MeshBasicMaterial(), 0);
-								me.scene.add(physicsMesh);
-								physicsMesh.position.copy(child.parent.position.clone().add((new THREE.Vector3()).fromArray(child.userData.center)));
-								// physicsMesh.position.copy(child.parent.position.clone());
-								physicsMesh.rotation.copy(child.parent.rotation);
-								physicsMesh.__dirtyPosition = true;
-								physicsMesh.__dirtyRotation = true;
-								// console.log(child.position);
+						// switch(child.userData.type) {
+						// 	case 'BoxCollider':
+						// 		var geometry = new THREE.BoxGeometry(child.userData.size[0]*child.parent.scale.x, child.userData.size[1]*child.parent.scale.y, child.userData.size[2]*child.parent.scale.z);
+						// 		var physicsMesh = new Physijs.BoxMesh(geometry, new THREE.MeshBasicMaterial(), 0);
+						// 		me.scene.add(physicsMesh);
+						// 		physicsMesh.position.copy(child.parent.position.clone().add((new THREE.Vector3()).fromArray(child.userData.center)));
+						// 		// physicsMesh.position.copy(child.parent.position.clone());
+						// 		physicsMesh.rotation.copy(child.parent.rotation);
+						// 		physicsMesh.__dirtyPosition = true;
+						// 		physicsMesh.__dirtyRotation = true;
+						// 		// console.log(child.position);
 
-								child.visible = false;
-								physicsMesh.visible = false;
-								break;
-						}
+						// 		child.visible = false;
+						// 		physicsMesh.visible = false;
+						// 		break;
+						// }
 
 						if (!gameObjects[child.name]) {
 							gameObjects[child.name] = child;
@@ -231,7 +228,7 @@ angular
 			rootScene.prototype.animate = function () {
 				requestAnimationFrame(this.animate.bind(this));
 
-				this.scene.simulate();
+				// this.scene.simulate();
 				this.render();
 				this.update();
 			}

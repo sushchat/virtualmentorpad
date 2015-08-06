@@ -54,10 +54,10 @@ angular
 				// For now, rotations need to be hardcoded
 				// as I'm unable to change the pointerlockcontrols rotation straight
 				// from a matrix
-				// var yawObject = player.children[0];
-				// if (target.name === 'PlayerStartHall') {
-				// 	yawObject.rotation.y = Math.PI / 2;
-				// }
+				var yawObject = player.children[0];
+				if (target.name === 'PlayerStartHall') {
+					yawObject.rotation.y = -Math.PI / 2;
+				}
 			};
 
 			rootScene.prototype.init = function (elemId) {
@@ -287,7 +287,17 @@ angular
 
 					inputVector.applyQuaternion(this.camera.quaternion);
 
-					player.applyCentralImpulse(inputVector);
+					var velocity = new THREE.Vector3();
+					velocity.add(inputVector);
+					velocity.multiplyScalar(2);
+					velocity.multiplyScalar(delta);
+					velocity.y = 0;
+
+		            if (Keyboard.getKey(KEYS.SHIFT)) {
+		                velocity.multiplyScalar(2);
+		            }
+
+					player.position.add(velocity);
 
 					prevTime = time;
 

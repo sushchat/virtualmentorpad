@@ -1,9 +1,15 @@
 <div id="blocker-loader" class="blocker" ng-style="{'opacity': (loading ? 1 : 0)}">
 	<div id="loader">
-		<span class="loading-text">Loading</span>
-		<div class="spinner">
-		  <div class="double-bounce1"></div>
-		  <div class="double-bounce2"></div>
+		<div class="loading-wrapper">
+			<span class="loading-text">Loading</span>
+			<div class="spinner">
+			  <div class="double-bounce1"></div>
+			  <div class="double-bounce2"></div>
+			</div>
+			<img class="loading-help-image" src="images/drag.png" ng-if="!isTouch">
+			<span class="loading-help" ng-if="!isTouch">Arrow keys to move.<br>Mouse to look around.</span>
+			<img class="loading-help-image" src="images/touch.png" ng-if="isTouch">
+			<span class="loading-help" ng-if="isTouch">Rotate device to look around.<br>Touch screen to move forward.</span>
 		</div>
 	</div>
 </div>

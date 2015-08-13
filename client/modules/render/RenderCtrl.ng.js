@@ -7,6 +7,11 @@ angular.module('vmp.render', [
 	])
 	.controller('RenderCtrl', function ($scope, $rootScene, CubeMapper, DatGUIHelper, PointerLockHandler) {
 
+		$scope.isTouch = (function () {
+		  	return !!('ontouchstart' in window) || // works on most browsers
+	      		!!('onmsgesturechange' in window); // works on ie10
+		})();
+
 		$scope.loading = true;
 
 		$rootScene.init('renderCanvas').then(function () {

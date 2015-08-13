@@ -12,6 +12,7 @@
 	height: 100%;
 	transition: opacity 1s ease-in-out;
 	opacity: 0;
+  pointer-events: none;
 }
 
 .blocker {
@@ -49,21 +50,35 @@
 	background-color: rgb(255, 255, 255);
 }
 
-.loading-text {
-    font-size: 40px;
+.loading-wrapper {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 200px;
-    margin-left: -100px;
-    height: 100px;
-    margin-top: -100px;
+    width: 300px;
+    margin-left: -150px;
+    height: 480px;
+    margin-top: -240px;
+}
+
+.loading-text {
+    font-size: 40px;
+    display: block;
+}
+
+.loading-help, .loading-help-image {
+    display: block;
+    font-size: 20px;
+}
+
+.loading-help-image {
+    margin: 0 auto;
 }
 
 .spinner {
+  display: block;
   width: 40px;
   height: 40px;
-  margin: 100px auto;
+  margin: 40px auto 80px auto;
   position: relative;
 }
 

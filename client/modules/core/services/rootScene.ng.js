@@ -4,12 +4,11 @@ angular
 		'vmp.core.input.keyboard',
 		'vmp.core.input.keys',
 		'vmp.core.input.gameController',
-		'vmp.core.pointerlockhandler',
 
 		'three',
 	])
 	.service('$rootScene',
-		function(THREE, $q, $window, Keyboard, KEYS, $modal, PointerLockHandler, assetsUrl, GameController) {
+		function(THREE, $q, $window, Keyboard, KEYS, $modal, assetsUrl, GameController) {
 			'use strict';
 
 			var controlsEnabled = false;
@@ -306,7 +305,6 @@ angular
 					else if (distVectorKioskLogin.length() < 2.5) {
 						if (!isNearbyKiosk) {
 
-							PointerLockHandler.disable();
 
 						    var modalInstance = $modal.open({
 						      animation: true,

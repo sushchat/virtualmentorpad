@@ -1,6 +1,5 @@
 angular
 	.module('vmp.core', [
 		'vmp.core.cubemapper',
-		'vmp.core.root-scene',
-		'vmp.core.pointerlockhandler'
+		'vmp.core.root-scene'
 	]);

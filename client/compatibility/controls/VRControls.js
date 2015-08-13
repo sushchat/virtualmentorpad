@@ -93,6 +93,10 @@ THREE.VRControls = function ( object, onError ) {
 
     };
 
+    this.getInputs = function () {
+        return vrInputs;
+    };
+
     this.resetSensor = function () {
 
         for ( var i = 0; i < vrInputs.length; i ++ ) {

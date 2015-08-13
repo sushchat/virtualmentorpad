@@ -17,6 +17,8 @@ angular
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
 
+			var raycaster = new THREE.Raycaster();
+
 			var gameObjects = {};
 			var isNearbyKiosk = false;
 
@@ -29,32 +31,14 @@ angular
 				this.controls = null;
 			};
 
-			var createCapsuleGeometry = function () {
-			    var merged = new THREE.Geometry();
-			    var cyl = new THREE.CylinderGeometry(1, 1, 6);
-			    var top = new THREE.SphereGeometry(1);
-			    var bot = new THREE.SphereGeometry(1);
-			    var matrix = new THREE.Matrix4();
-			    matrix.makeTranslation(0, 0.5, 0);
-			    top.applyMatrix(matrix);
-			    var matrix = new THREE.Matrix4();
-			    matrix.makeTranslation(0, -0.5, 0);
-			    bot.applyMatrix(matrix);
-			    // merge to create a capsule
-			    merged.merge(top);
-			    merged.merge(bot);
-			    // merged.merge(cyl);
-			    return merged;
-			};
-
 			var teleportPlayer = function (target) {
+				var yawObject = player.children[0];
+
 				player.position.copy(target.position);
-				player.__dirtyPosition = true;
 
 				// For now, rotations need to be hardcoded
 				// as I'm unable to change the pointerlockcontrols rotation straight
 				// from a matrix
-				var yawObject = player.children[0];
 				if (target.name === 'PlayerStartHall') {
 					yawObject.rotation.y = -Math.PI / 2;
 				}
@@ -96,6 +80,8 @@ angular
 				this.vrManager = new WebVRManager(this.renderer, this.vrEffect, {hideButton: false});
 
 				this.touchInputVector = new THREE.Vector3();
+
+				this.colliders = [];
 
 				var loader = new THREE.ObjectLoader();
 				loader.setCrossOrigin('Anonymous');
@@ -149,43 +135,33 @@ angular
 						me.touchInputVector.set(0,0,0)
 					});
 
-					// dae.updateMatrix();
-					// // var physicsWorld = new Physijs.ConcaveMesh(dae.geometry, dae.material, 0);
-					// // physicsWorld.position.copy(dae.position);
 					me.scene.add(obj);
-
-					var capsule_geometry = createCapsuleGeometry();
-					// var material = new THREE.MeshLambertMaterial({ opacity: 0.8, transparent: true, color: 0xff0000 });
-					var material = new THREE.MeshBasicMaterial();
 
 					player = new THREE.Object3D();
 					player.add(me.camera);
 					me.scene.add( player );
 
-					// var light = new THREE.AmbientLight( 0xcccccc ); // soft white light
-					// me.scene.add( light );
-
-					// player.setAngularFactor(new THREE.Vector3(0, 0, 0));
-					// player.setLinearFactor(new THREE.Vector3(1, 0, 1));
-
-
 					obj.traverse(function (child) {
-						// switch(child.userData.type) {
-						// 	case 'BoxCollider':
-						// 		var geometry = new THREE.BoxGeometry(child.userData.size[0]*child.parent.scale.x, child.userData.size[1]*child.parent.scale.y, child.userData.size[2]*child.parent.scale.z);
-						// 		var physicsMesh = new Physijs.BoxMesh(geometry, new THREE.MeshBasicMaterial(), 0);
-						// 		me.scene.add(physicsMesh);
-						// 		physicsMesh.position.copy(child.parent.position.clone().add((new THREE.Vector3()).fromArray(child.userData.center)));
-						// 		// physicsMesh.position.copy(child.parent.position.clone());
-						// 		physicsMesh.rotation.copy(child.parent.rotation);
-						// 		physicsMesh.__dirtyPosition = true;
-						// 		physicsMesh.__dirtyRotation = true;
-						// 		// console.log(child.position);
+						switch(child.userData.type) {
+							case 'BoxCollider':
+								var geometry = new THREE.BoxGeometry(child.userData.size[0]*child.parent.scale.x, child.userData.size[1]*child.parent.scale.y, child.userData.size[2]*child.parent.scale.z);
 
-						// 		child.visible = false;
-						// 		physicsMesh.visible = false;
-						// 		break;
-						// }
+								// Bake the rotations as normals in collision reports are not rotated
+					            var worldRot = child.parent.getWorldQuaternion();
+				                _.each(geometry.vertices, function(vertex) {
+							      	vertex.applyQuaternion(worldRot);
+							    });
+
+							    geometry.computeFaceNormals();
+
+								var colliderMesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial());
+								me.colliders.push(colliderMesh);
+								me.scene.add(colliderMesh);
+
+								colliderMesh.visible = false;
+								colliderMesh.position.copy(child.parent.position.clone().add((new THREE.Vector3()).fromArray(child.userData.center)));
+								break;
+						}
 
 						if (!gameObjects[child.name]) {
 							gameObjects[child.name] = child;
@@ -214,7 +190,6 @@ angular
 					  }
 					});
 
-
 	                me.animate();
 
 					deferred.resolve();
@@ -228,7 +203,6 @@ angular
 			rootScene.prototype.animate = function () {
 				requestAnimationFrame(this.animate.bind(this));
 
-				// this.scene.simulate();
 				this.render();
 				this.update();
 			}
@@ -293,6 +267,22 @@ angular
 					velocity.multiplyScalar(delta);
 					velocity.y = 0;
 
+					if (inputVector.lengthSq() > 0) {
+						raycaster.set(player.position, velocity);
+
+						var intersects = raycaster.intersectObjects( this.colliders );
+
+			          	if ( intersects.length > 0 && intersects[0].distance < 0.5) {
+				            var raycastNormal = intersects[0].face.normal;
+				            var raycastGroundPosition = intersects[0].point;
+
+				            var distanceInside = 0.5-intersects[0].distance;
+
+				            var add = raycastNormal.clone().multiplyScalar(-velocity.clone().dot(raycastNormal));
+				            velocity.add(add);
+			          	}
+					}
+
 		            if (Keyboard.getKey(KEYS.SHIFT)) {
 		                velocity.multiplyScalar(2);
 		            }
@@ -300,7 +290,6 @@ angular
 					player.position.add(velocity);
 
 					prevTime = time;
-
 				}
 
 
@@ -310,9 +299,7 @@ angular
 
 					if (distVectorKioskLogout.length() < 2.5) {
 						if (!isNearbyKiosk) {
-
 							Meteor.logout();
-
 						}
 						isNearbyKiosk = true;
 					}
@@ -324,14 +311,12 @@ angular
 						    var modalInstance = $modal.open({
 						      animation: true,
 						      templateUrl: 'client/modules/kiosk/kiosk.ng.html'
-						      // controller: 'ModalInstanceCtrl',
-						      // size: size,
 						    });
 
 						    modalInstance.result.then(function (selectedItem) {
 
 						    }, function () {
-						      // $log.info('Modal dismissed at: ' + new Date());
+
 						    });
 
 						}

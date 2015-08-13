@@ -1,0 +1,14 @@
+
+<div class="row">
+  <div class="col-xs-12">
+  	<div ng-if="!$root.currentUser.profile.guest">
+  		<div class="modal-body">
+    		Would you like to end your session?
+    	</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="logout()">End</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

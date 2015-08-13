@@ -21,13 +21,15 @@ angular
 			var gameObjects = {};
 			var isNearbyKiosk = false;
 
+			var canMove = true;
+
 			var player = null;
 
 			var rootScene = function () {
 				this.renderer = null;
 				this.scene = null;
 				this.camera = null;
-				this.controls = null;
+				this.vrControls = null;
 			};
 
 			var teleportPlayer = function (target) {
@@ -39,7 +41,17 @@ angular
 				// as I'm unable to change the pointerlockcontrols rotation straight
 				// from a matrix
 				if (target.name === 'PlayerStartHall') {
-					yawObject.rotation.y = -Math.PI / 2;
+					// yawObject.rotation.y = -Math.PI;
+					var inputs = this.vrControls.getInputs();
+					inputs.forEach(function (input) {
+						if (input.deviceId === 'webvr-polyfill:mouse-keyboard') {
+							input.theta = Math.PI / 2;
+						}
+						if (input.deviceId === 'webvr-polyfill:gyro') {
+							// this.worldTransform = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
+							// setTimeout(function() {alert(input.getOrientation())}, 10000);
+						}
+					});
 				}
 			};
 
@@ -82,13 +94,12 @@ angular
 
 				this.colliders = [];
 
+				this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
+				this.vrControls = new THREE.VRControls( this.camera );
+
 				var loader = new THREE.ObjectLoader();
 				loader.setCrossOrigin('Anonymous');
 				loader.load(assetsUrl + 'models/school/scene.json', function (obj) {
-
-					me.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 100000 );
-
-					me.vrControls = new THREE.VRControls( me.camera );
 
 
 					// Setup a game controller for mobile
@@ -168,23 +179,23 @@ angular
 					});
 
 					if (gameObjects['PlayerStartHall']) {
-						teleportPlayer(gameObjects['PlayerStartHall']);
+						teleportPlayer.bind(me)(gameObjects['PlayerStartHall']);
 					}
 
 					Accounts.onLogin(function () {
 						if (gameObjects['PlayerStartClass']) {
-							teleportPlayer(gameObjects['PlayerStartClass']);
+							teleportPlayer.bind(me)(gameObjects['PlayerStartClass']);
 						}
 					});
 
 					Meteor.autorun(function () {
 					  if (Meteor.userId()) {
 						if (gameObjects['PlayerStartClass']) {
-							teleportPlayer(gameObjects['PlayerStartClass']);
+							teleportPlayer.bind(me)(gameObjects['PlayerStartClass']);
 						}
 					  } else {
 						if (gameObjects['PlayerStartHall']) {
-							teleportPlayer(gameObjects['PlayerStartHall']);
+							teleportPlayer.bind(me)(gameObjects['PlayerStartHall']);
 						}
 					  }
 					});
@@ -213,7 +224,7 @@ angular
 			rootScene.prototype.update = function () {
 				this.vrControls.update();
 
-				if ( true ) {
+				if ( canMove ) {
 
 					var moveForward = false;
 					var moveBackward = false;
@@ -298,23 +309,49 @@ angular
 
 					if (distVectorKioskLogout.length() < 2.5) {
 						if (!isNearbyKiosk) {
-							Meteor.logout();
+							canMove = false;
+
+						    var modalInstance = $modal.open({
+						    	controller: function($scope) {
+					    		  	$scope.logout = function () {
+					    		  		Meteor.logout();
+									    modalInstance.close();
+								  	};
+					    		  	$scope.cancel = function () {
+									    modalInstance.close();
+								  	};
+						    	},
+						      	animation: true,
+						      	templateUrl: 'client/modules/kiosk/logout.ng.html'
+						    });
+
+						    modalInstance.result.then(function (selectedItem) {
+								canMove = true;
+						    }, function () {
+								canMove = true;
+						    });
 						}
 						isNearbyKiosk = true;
 					}
 					else if (distVectorKioskLogin.length() < 2.5) {
 						if (!isNearbyKiosk) {
 
+							canMove = false;
 
 						    var modalInstance = $modal.open({
-						      animation: true,
-						      templateUrl: 'client/modules/kiosk/kiosk.ng.html'
+						    	controller: function($scope) {
+					    		  	$scope.close = function () {
+									    modalInstance.close();
+								  	};
+						    	},
+						      	animation: true,
+						      	templateUrl: 'client/modules/kiosk/login.ng.html'
 						    });
 
 						    modalInstance.result.then(function (selectedItem) {
-
+								canMove = true;
 						    }, function () {
-
+								canMove = true;
 						    });
 
 						}

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-xs-12" ng-init="mode = ''">
+  	<div ng-if="!mode">
+	  	<div ng-if="!$root.currentUser">
+	  		<div class="modal-body">
+	    		<div meteor-include src="atForm"></div>
+	    	</div>
+	        <div class="modal-footer">
+	            <!-- <button class="btn btn-default" type="button" ng-click="close()">Cancel</button> -->
+	            <a href ng-click="$parent.$parent.mode='disclaimer'">Disclaimer</a>
+	        </div>
+		</div>
+	  	<div ng-if="$root.currentUser">
+	  		<div class="modal-body">
+	    		You are now logged in.
+	    	</div>
+	        <div class="modal-footer">
+	            <button class="btn btn-default" type="button" ng-click="close()">Close</button>
+	        </div>
+		</div>
+	</div>
+  	<div ng-if="mode == 'disclaimer'">
+  		<div class="modal-body">
+	  		<p>
+				VirtualMentorPad is a mentor-learner mentoring tool using both 3D and VR.
+				Children above 13 years or older can use Virtualmentorpad platform (using VR devices with adult supervision(age > 18) only).
+				When you sign in to our preview demo, you accept that you are above 13.
+				WebGL is an open source royalty free technology using javascript API on the browser.
+				WebVR is an open source royalty free technology for VR in the browser.
+				VR devices like Oculus Rift and Google Cardboard are registered to Google and Facebook.
+				Please refer to terms of usage of this devices prior to using them at below websites:
+			</p>
+			<p>
+				<a href="https://www.google.com/get/cardboard/">https://www.google.com/get/cardboard/</a><br>
+				<a href="https://www.oculus.com/">https://www.oculus.com/</a>
+			</p>
+			<p>
+				The users who use VR devices above to view our demo acknowledge that since virtual reality is a new technology, there may be unknown and non-obvious risks associated with any technology demos, which may be negative reactions  to virtual reality experience like nausea, dizziness or disorientation. Virtual devices may not be appropriate for people with heart and other conditions. and other risks that may be associated with malfunction of the devices. Some of the related technologies like Web VR are still in early development and as early adopters, there may be unforeseen bugs, security loopholes in the platform as a result of using new technology stacks.
+				Please view the demo using VR devices at your own risk and LEARNROLL LLC or its personnel's will not be held responsible in any
+				manner for any claim whatsoever relating to use of our demo. This is currently a preview demo to showcase technology.
+	  		</p>
+  		</div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-click="$parent.mode=''">Back</button>
+        </div>
+	</div>
+  </div>
+</div>
